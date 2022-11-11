@@ -1,0 +1,4 @@
+strip
+spire
+sleep
+spell

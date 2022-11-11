@@ -1,6 +1,0 @@
-strip
-spire
-sleep
-spell
-tongs
-gongs

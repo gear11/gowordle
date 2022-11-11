@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"wordle/wordle"
@@ -14,13 +15,29 @@ func main() {
 	} else {
 		solveNext()
 	}
+}
 
+func MustReadLines(path string) []string {
+	file, err := os.Open(path)
+	if err != nil {
+		panic(err)
+	}
+	defer func() {
+		_ = file.Close()
+	}()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	return lines
 }
 
 func solveNext() {
 	fmt.Println("Solving next")
-	guessWords, _ := wordle.ReadLines("words2.txt")
-	answerWords, _ := wordle.ReadLines("answers.txt")
+	guessWords := MustReadLines("data/words2.txt")
+	answerWords := MustReadLines("data/answers.txt")
 	var nextGuess string
 	for i := 1; i < len(os.Args); i += 2 {
 		guess, colors := os.Args[i], os.Args[i+1]
@@ -33,8 +50,8 @@ func solveNext() {
 
 func solveAll() {
 	fmt.Println("Solving all")
-	guessWords, _ := wordle.ReadLines("words2.txt")
-	answerWords, _ := wordle.ReadLines("answers.txt")
+	guessWords := MustReadLines("data/words2.txt")
+	answerWords := MustReadLines("data/answers.txt")
 
 	fmt.Println("Starting with", len(answerWords), "possibilities")
 

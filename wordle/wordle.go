@@ -1,11 +1,9 @@
 package wordle
 
 import (
-	"bufio"
 	"fmt"
 	"hash/fnv"
 	"math"
-	"os"
 )
 
 // eval evaluates the given guess against the actual string
@@ -184,23 +182,4 @@ func Solve(actual string, guessWords, answerWords []string, guess string) (guess
 		remaining = Possible(guess, colors, remaining)
 	}
 	return guesses
-}
-
-// ReadLines reads a whole file into memory
-// and returns a slice of its lines.
-func ReadLines(path string) ([]string, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer func(file *os.File) {
-		_ = file.Close()
-	}(file)
-
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-	return lines, scanner.Err()
 }
